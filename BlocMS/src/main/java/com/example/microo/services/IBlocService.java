@@ -16,6 +16,6 @@ public interface IBlocService {
     public Bloc updateBloc2(Long id, Bloc user) ;
 
 
-    //Bloc affecterChaabmresABloc(List<Long> numchambre, String nomBloc);
+    Bloc affecterChaabmresABloc(Long numchambre, String nomBloc);
     public List<Bloc> rechercheParNomBloc(String nomBloc);
 }

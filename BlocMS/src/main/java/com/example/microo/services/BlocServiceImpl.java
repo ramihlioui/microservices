@@ -1,5 +1,7 @@
 package com.example.microo.services;
 
+import com.example.microo.client.ChambreClient;
+import com.example.microo.dto.Chambre;
 import com.example.microo.entities.Bloc;
 import com.example.microo.repositories.BlocRepo;
 import lombok.AllArgsConstructor;
@@ -10,6 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 public class BlocServiceImpl implements IBlocService {
     BlocRepo blocRepo;
+
+    ChambreClient chambreClient;
 
     @Override
     public List<Bloc> retrieveBlocs() {
@@ -46,21 +50,20 @@ public class BlocServiceImpl implements IBlocService {
 
         return blocRepo.save(bloc1);
     }
-    /*:public Bloc affecterChaabmresABloc(List<Long> numchambre, String nomBloc){
+   public Bloc affecterChaabmresABloc(Long numchambre, String nomBloc){
         Bloc bloc = blocRepo.findBlocByNomBloc(nomBloc);
-        List<Chambre> chambres = new ArrayList<>();
 
-        for (long num : numchambre) {
-            Chambre chambre = chambreRepo.findChambreByNumeroChambre(num);
-            Bloc ancienBloc = chambre.getBloc(); // Enregistrer le bloc d'origine
+
+        Chambre chambre = chambreClient.getChambres(numchambre);
+
+
 
             if (bloc.getCapaciteBloc() > 0 ) { // Vérifier si la capacité est supérieure à zéro
-                chambre.setBloc(bloc);
-                chambres.add(chambre);
-                if (ancienBloc != null) {
-                    ancienBloc.setCapaciteBloc(ancienBloc.getCapaciteBloc() + 1); // Incrémenter la capacité de l'ancien bloc
-                    if (ancienBloc != null && (ancienBloc.getSature() == null || ancienBloc.getSature())) {
-                        ancienBloc.setSature(false); // Mettre à jour l'état de saturation de l'ancien bloc si nécessaire
+                chambre.setIdBloc(bloc.getIdBloc());
+                if (bloc != null) {
+                    bloc.setCapaciteBloc(bloc.getCapaciteBloc() + 1); // Incrémenter la capacité de l'ancien bloc
+                    if (bloc != null && (bloc.getSature() == null || bloc.getSature())) {
+                        bloc.setSature(false); // Mettre à jour l'état de saturation de l'ancien bloc si nécessaire
                     }
                 }
                 bloc.setCapaciteBloc(bloc.getCapaciteBloc() - 1);
@@ -72,12 +75,13 @@ public class BlocServiceImpl implements IBlocService {
 
                 }
 
-            }
-        }
+                chambreClient.affecteChambre(chambre);
 
-        chambreRepo.saveAll(chambres);
+            }
+
+
         return bloc;
-    }*/
+    }
 
     @Override
     public List<Bloc> rechercheParNomBloc(String nomBloc) {
