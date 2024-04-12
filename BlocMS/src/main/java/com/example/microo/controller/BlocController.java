@@ -53,11 +53,11 @@ public class BlocController {
         iBlocService.removeBloc(idBloc);
     }
 
-    /*@PostMapping("/affecterChambresABloc")
-    public Bloc affecterChaabmresABloc(@RequestParam List<Long> numchambre, @RequestParam String nomBloc) {
+    @PostMapping("/affecterChambresABloc")
+    public Bloc affecterChaabmresABloc(@RequestParam Long numchambre, @RequestParam String nomBloc) {
         return iBlocService.affecterChaabmresABloc(numchambre,nomBloc) ;
-        //IBlocService.affecterChaabmresABloc(numchambre, nomBloc);
-        //}*/
+
+    }
 
 }
 
