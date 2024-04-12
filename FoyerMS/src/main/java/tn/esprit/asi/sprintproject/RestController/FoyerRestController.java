@@ -33,7 +33,6 @@ public class FoyerRestController {
     }
 
     @GetMapping("/afficherfoyer/{id}")
-
     Foyer retrieveFoyer (@PathVariable("id") long  idFoyer){
    return  foyerService.retrieveFoyer(idFoyer);
     }

@@ -1,24 +1,52 @@
 package tn.esprit.myfirstproject.services;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import tn.esprit.myfirstproject.client.FoyerClient;
+import tn.esprit.myfirstproject.dto.Foyer;
+import tn.esprit.myfirstproject.dto.UniversiteDTO;
 import tn.esprit.myfirstproject.entities.Universite;
 import tn.esprit.myfirstproject.repositories.IUniversiteRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class IUniversiteServicesImp implements IUniversiteServices {
 
     private final  IUniversiteRepository iUniversiteRepository ;
 
+
+    private FoyerClient foyerClient;
+
     @Override
-    public List<Universite> retrieveAllUniversites() {
-        return iUniversiteRepository.findAll() ;
+    public List<UniversiteDTO> retrieveAllUniversites() {
+        List<Universite> list =  iUniversiteRepository.findAll() ;
+        List<Foyer> foyerList = foyerClient.getListFoyer();
+        List<UniversiteDTO> result = new ArrayList<>();
+        list.forEach(e->  {
+                   UniversiteDTO uno = UniversiteDTO.builder()
+                           .idUniversite(e.getIdUniversite())
+                           .adresse(e.getAdresse())
+                           .nomUniversite(e.getNomUniversite())
+                           .build();
+
+                    for (Foyer f : foyerList){
+                        if(e.getIdfoyer()==f.getIdFoyer()){
+                            uno.setNomFoyer(f.getNomFoyer() != null ? f.getNomFoyer() : null);
+                        }
+                    }
+
+                    result.add(uno);
+        });
+
+
+        return result;
     }
 
     @Override

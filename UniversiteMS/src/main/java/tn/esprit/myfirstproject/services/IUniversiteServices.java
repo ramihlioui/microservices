@@ -1,11 +1,12 @@
 package tn.esprit.myfirstproject.services;
 
+import tn.esprit.myfirstproject.dto.UniversiteDTO;
 import tn.esprit.myfirstproject.entities.Universite;
 
 import java.util.List;
 
 public interface IUniversiteServices {
-    List<Universite> retrieveAllUniversites();
+    List<UniversiteDTO> retrieveAllUniversites();
     Universite addUniversite(Universite b);
     Universite updateUniversite (Universite b);
     String deleteUniversite (  long idUniversite);

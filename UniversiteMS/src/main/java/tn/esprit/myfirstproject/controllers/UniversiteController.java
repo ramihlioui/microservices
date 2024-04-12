@@ -3,6 +3,7 @@ package tn.esprit.myfirstproject.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.myfirstproject.dto.UniversiteDTO;
 import tn.esprit.myfirstproject.entities.Universite;
 import tn.esprit.myfirstproject.repositories.IUniversiteRepository;
 import tn.esprit.myfirstproject.services.IUniversiteServices;
@@ -18,7 +19,7 @@ public class UniversiteController {
 
     // retourne la liste de toutes les universite
     @GetMapping("/afficheruniversites")
-    List<Universite> retrieveAllUniversites() {
+    List<UniversiteDTO> retrieveAllUniversites() {
         return iUniversiteService.retrieveAllUniversites();
     }
 
