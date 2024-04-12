@@ -20,7 +20,7 @@ export class ListReservationComponent {
   reservation!:Reservation;
   typesChambre: string[] = Object.values(TypeChambre);
   chambres: Chambre[] = [];
-    listBloc:Bloc[]=[];
+  listBloc:Bloc[]=[];
   idBlocSelectionne!: number;
   typeChambreSelectionne!: TypeChambre;
   userconnect = JSON.parse(localStorage.getItem("userconnect")!);
@@ -28,9 +28,14 @@ export class ListReservationComponent {
   constructor(private reservationService:ReservationService, private chambreService:ChambreService,private blocService:BlocService) { }
 
   ngOnInit(): void {
+
+    this.retrieveBlocs()
+    this.retrieveChambres()
+
     const idEtudiant = this.userconnect.id;
     this.reservationService.getCurrentReservationByEtudiantId(idEtudiant).subscribe((data) => {
       this.reservation = data;
+      console.log(data);
     });
   }
 
@@ -86,7 +91,11 @@ export class ListReservationComponent {
 
   ajouterReservation() {
   const cinEtudiant = this.userconnect.cin;
-  this.reservationService.ajouterReservation(this.chambres[0].idChambre, cinEtudiant)
+  const data={
+    chamberId:  this.chambres[0].idChambre,
+    etudiantId: this.userconnect.id
+  }
+  this.reservationService.ajouterReservation(data)
     .subscribe((data) => {
       const Toast = Swal.mixin({
         toast: true,
@@ -115,6 +124,14 @@ retrieveBlocs() {
     console.log(this.listBloc);
   });
 }
+
+  retrieveChambres() {
+    this.blocService.retrieveChambres().subscribe((data: Chambre[]) => {
+      this.chambres = data;
+      console.log(this.chambres);
+    });
+  }
+
 
 }
 

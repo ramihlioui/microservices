@@ -62,6 +62,10 @@ desaffecterChambresDeBloc(numChambres: number[]): Observable<any> {
   return this.http.post<any>(`${this.url}/bloc/desaffecterChambresDeBloc`, numChambres);
 }
 
+ // Get Users - Read
+ retrieveBlocsAndChambres(): Observable<any[]>{
+  return this.http.get<any[]>(`${this.url}/reservation/blocAndChambreIds`)
+}
 
 
 }

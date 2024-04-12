@@ -1,0 +1,230 @@
+version: '3'
+
+services:
+  mysql-db:
+    image: mysql:latest
+    container_name: mysql-container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: chambre_Micro_Service
+    ports:
+      - "3306:3306"
+    networks:
+      - chambre_network
+  mongodb:
+    image: mongo:latest
+    container_name: mongo-container
+    restart: always
+    ports:
+      - "27017:27017"
+    networks:
+      - chambre_network
+    environment:
+      MONGO_INITDB_DATABASE: reservation
+
+  eureka:
+    container_name: eureka
+    build: .\Eureka
+    hostname: serviceregistry
+    ports:
+      - "8761:8761"
+    image: "eureka"
+    networks:
+      - chambre_network
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
+  h2-database:
+    image: 1000kit/h2
+    container_name: db-h2 
+    environment:
+      - H2_USER=ahmed
+      - H2_PASSWORD=
+      - H2_CONSOLE_ENABLED=true
+      - H2_OPTIONS=-ifNotExists -webAllowOthers
+    ports:
+      - "8181:8181"
+    restart: unless-stopped
+  foyer:
+    container_name: foyer
+    image: "foyermsms"
+    build: .\FoyerMS
+    ports:
+      - "8016:8016" 
+    networks:
+      - chambre_network  
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:Foyer
+      - SPRING_DATASOURCE_USERNAME=hana
+      - SPRING_DATASOURCE_PASSWORD=
+      - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
+    depends_on:
+      - eureka
+      - h2-database
+  chambre:
+    container_name: chambre
+    image: chambre-ms
+    build:
+      context: .\ChambreMS
+    restart: always
+    ports:
+      - "8099:8099"
+    networks:
+      - chambre_network
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/chambre_Micro_Service?useUnicode=true&useJDBCCompliantTimezoneShift=true&createDatabaseIfNotExist=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_SHOW_SQL=true
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
+    depends_on:
+      - mysql-db
+      - eureka
+      - gateway
+
+  bloc:
+    container_name: bloc
+    image: bloc-ms
+    build:
+      context: .\BlocMS
+    restart: always
+    ports:
+      - "9564:9564"
+    networks:
+      - chambre_network
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/microbloc2?useUnicode=true&useJDBCCompliantTimezoneShift=true&createDatabaseIfNotExist=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_SHOW_SQL=true
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
+    depends_on:
+      - mysql-db
+      - eureka
+      - gateway
+      - chambre
+
+
+  universite:
+    container_name: universite
+    image: universite-ms
+    build:
+      context: .\universiteMS
+    restart: always
+    ports:
+      - "8017:8017"
+    networks:
+      - chambre_network
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/microbloc2?useUnicode=true&useJDBCCompliantTimezoneShift=true&createDatabaseIfNotExist=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_SHOW_SQL=true
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
+    depends_on:
+      - mysql-db
+      - eureka
+
+  user:
+    container_name: user
+    image: user-ms
+    build:
+      context: .\UserMS
+    restart: always
+    ports:
+      - "8070:8070"
+    networks:
+      - chambre_network
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/chambre_Micro_Service?useUnicode=true&useJDBCCompliantTimezoneShift=true&createDatabaseIfNotExist=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_SHOW_SQL=true
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
+    depends_on:
+      - mysql-db
+      - eureka
+  reservation:
+    container_name: reservation
+    image: reservation-ms
+    build:
+      context: .\ReservationMS
+    restart: always
+    ports:
+      - "8080:3000"
+    networks:
+      - chambre_network
+    environment:
+      - MONGODB_URL=mongodb://mongodb:27017/reservation
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/
+      - EUREKA_CLIENT_REGISTER=true
+
+    depends_on:
+      - mongodb
+      - eureka
+      - gateway
+      - chambre
+      - bloc
+
+  angular:
+    container_name: angular
+    image: angular-ms
+    build:
+      context: .\angular_ms
+    restart: always
+    ports:
+      - "3500:80"
+    networks:
+      - chambre_network
+    depends_on:
+      - gateway     
+
+  gateway:
+    container_name: gateway
+    image: gateway-ms
+    build:
+      context: .\API_Gateway_Server
+    restart: always
+    ports:
+      - "8090:8090"
+    networks:
+      - chambre_network
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
+      - eureka.client.register-with-eureka=true
+      - spring.cloud.gateway.routes[0].id=chambreMS
+      - spring.cloud.gateway.routes[0].uri=http://host.docker.internal:8099
+      - spring.cloud.gateway.routes[0].predicates[0]=Path=/chambre/**
+      - spring.cloud.gateway.routes[1].id=reservationMS
+      - spring.cloud.gateway.routes[1].uri=http://host.docker.internal:3000
+      - spring.cloud.gateway.routes[1].predicates[0]=Path=/reservation/**
+      - spring.cloud.gateway.routes[2].id=userMS
+      - spring.cloud.gateway.routes[2].uri=http://user:8070
+      - spring.cloud.gateway.routes[2].predicates[0]=Path=/etudiant/**
+      - spring.cloud.gateway.routes[3].id=authMS
+      - spring.cloud.gateway.routes[3].uri=http://user:8070
+      - spring.cloud.gateway.routes[3].predicates[0]=Path=/auth/**
+      - spring.cloud.gateway.routes[4].id=blocMS
+      - spring.cloud.gateway.routes[4].uri=http://bloc:9564
+      - spring.cloud.gateway.routes[4].predicates[0]=Path=/bloc/**
+      - spring.cloud.gateway.routes[5].id=foyerMS
+      - spring.cloud.gateway.routes[5].uri=http://foyer:8016
+      - spring.cloud.gateway.routes[5].predicates[0]=Path=/foyer/**
+      - spring.cloud.gateway.routes[6].id=universiteMS
+      - spring.cloud.gateway.routes[6].uri=http://universite:8017
+      - spring.cloud.gateway.routes[6].predicates[0]=Path=/universite/**
+
+    depends_on:
+      - eureka
+
+networks:
+  chambre_network:
+    driver: bridge

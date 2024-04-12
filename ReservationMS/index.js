@@ -4,7 +4,7 @@ const Eureka = require('eureka-js-client').Eureka;
 const axios = require('axios');
 
 const bodyParser = require('body-parser');
-require('dotenv').config(); 
+require('dotenv').config();
 
 const app = express();
 const port = 3000;
@@ -27,22 +27,22 @@ const client = new Eureka({
     },
   },
   eureka: {
-    host: 'localhost', 
-    port: 8761, 
+    host: 'localhost',
+    port: 8761,
     servicePath: '/eureka',
   },
-  registerWithEureka: true
+  registerWithEureka: process.env.EUREKA_CLIENT_REGISTER
 });
 
 client.start();
 
 
 mongoose.connect(process.env.MONGODB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-  
-  app.use(bodyParser.json());
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+app.use(bodyParser.json());
 
 // Reservation schema
 const reservationSchema = new mongoose.Schema({
@@ -52,7 +52,7 @@ const reservationSchema = new mongoose.Schema({
     default: Date.now
   },
   etudiantId: {
-    type: [Number], 
+    type: [Number],
     required: true,
   },
   chamberId: {
@@ -62,6 +62,21 @@ const reservationSchema = new mongoose.Schema({
 });
 
 const Reservation = mongoose.model('Reservation', reservationSchema);
+
+
+
+app.get('/reservation/student/:id', async (req, res) => {
+  try {
+    const reservation = await Reservation.find({etudiantId: req.params.id});
+    if (!reservation) {
+      return res.status(500).json({ error: 'Reservation not found' });
+    }
+    res.json(reservation);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 app.post('/reservation/reservations', async (req, res) => {
   try {
@@ -100,8 +115,8 @@ app.get('/reservation/blocAndChambreIds', async (req, res) => {
   try {
     // Make parallel requests to fetch bloc and chambre IDs
     const [blocResponse, chambreResponse] = await Promise.all([
-      axios.get('http://localhost:8090/bloc/AllBlocs'),
-      axios.get('http://localhost:8090/chambre/afficherchambres')
+      axios.get('http://bloc:8090/bloc/AllBlocs'),
+      axios.get('http://host.docker.internal:8090/chambre/afficherchambres')
     ]);
 
     // Extract bloc and chambre IDs from responses
@@ -118,61 +133,63 @@ app.get('/reservation/blocAndChambreIds', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
-});  
+});
 
 
 
 
-  app.get('/reservation/reservations/:id', async (req, res) => {
-    try {
-      const reservation = await Reservation.findById(req.params.id);
-      if (!reservation) {
-        return res.status(404).json({ error: 'Reservation not found' });
-      }
-      res.json(reservation);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+app.get('/reservation/reservations/:id', async (req, res) => {
+  try {
+    const reservation = await Reservation.findBy(req.params.id);
+    if (!reservation) {
+      return res.status(404).json({ error: 'Reservation not found' });
     }
-  });
+    res.json(reservation);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 
-  app.get('/reservation/reservations/chamber/:chamberId', async (req, res) => {
-    try {
-      const reservations = await Reservation.find({ chamberId: req.params.chamberId });
-      res.json(reservations);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+app.get('/reservation/reservations/chamber/:chamberId', async (req, res) => {
+  try {
+    const reservations = await Reservation.find({ chamberId: req.params.chamberId });
+    res.json(reservations);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+app.put('/reservation/reservations/:id', async (req, res) => {
+  try {
+    const reservation = await Reservation.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!reservation) {
+      return res.status(404).json({ error: 'Reservation not found' });
     }
-  });
-  app.put('/reservation/reservations/:id', async (req, res) => {
-    try {
-      const reservation = await Reservation.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-        runValidators: true,
-      });
-      if (!reservation) {
-        return res.status(404).json({ error: 'Reservation not found' });
-      }
-      res.json(reservation);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
+    res.json(reservation);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+app.delete('/reservation/reservations/:id', async (req, res) => {
+  try {
+    const reservation = await Reservation.findByIdAndDelete(req.params.id);
+    if (!reservation) {
+      return res.status(404).json({ error: 'Reservation not found' });
     }
-  });
-  
-  app.delete('/reservation/reservations/:id', async (req, res) => {
-    try {
-      const reservation = await Reservation.findByIdAndDelete(req.params.id);
-      if (!reservation) {
-        return res.status(404).json({ error: 'Reservation not found' });
-      }
-      res.json({ message: 'Reservation deleted successfully' });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  });
-  
-  app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-  });
-  
-  module.exports = Reservation;
+    res.json({ message: 'Reservation deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+module.exports = Reservation;

@@ -1,7 +1,6 @@
 export class Reservation {
-  idReservation!: number;
-  numReservation!: string;
-  debutAnneeUniv!: Date;
-  finAnneeUniv!: Date;
+  idReservation!: string;
+  dateCreation!: Date;
+  numChambre!: bigint
   estValide!: boolean;
 }

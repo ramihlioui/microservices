@@ -10,7 +10,6 @@ import tn.esprit.myfirstproject.services.IUniversiteServices;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/universite")
 @RequiredArgsConstructor
 public class UniversiteController {

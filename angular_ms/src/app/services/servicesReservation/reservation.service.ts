@@ -11,8 +11,8 @@ export class ReservationService {
 
   constructor(private http: HttpClient) { }
 
-  ajouterReservation(idChambre: number, cin: number) {
-    return this.http.post(`${environment.BaseUrl}/reservation/add/${idChambre}/${cin}`, null);
+  ajouterReservation(data:any) {
+    return this.http.post(`${environment.BaseUrl}/reservation/reservations`, data);
   }
 
   updateReservation(reservation: Reservation) {
@@ -28,7 +28,7 @@ export class ReservationService {
   }
 
   getCurrentReservationByEtudiantId(idEtudiant: number) {
-    return this.http.get<Reservation>(`${environment.BaseUrl}/reservation/getReservationsByEtudiantId/${idEtudiant}`);
+    return this.http.get<Reservation>(`${environment.BaseUrl}/reservation/student/${idEtudiant}`);
   }
 
   annulerReservation(cin: number) {
