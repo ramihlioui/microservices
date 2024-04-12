@@ -35,7 +35,9 @@ export class ListReservationComponent {
     const idEtudiant = this.userconnect.id;
     this.reservationService.getCurrentReservationByEtudiantId(idEtudiant).subscribe((data) => {
       this.reservation = data;
-      console.log(data);
+      console.log(this.reservation);
+
+
     });
   }
 

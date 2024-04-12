@@ -50,4 +50,8 @@ public class UniversiteController {
     Universite getuniversiteparnom(@PathVariable("nom") String nom){return iUniversiteService.getUniversiteparnom(nom);}
 
 
+    @PutMapping("/affecterFoyer/{idFoyer}/{nomUniversite}")
+    void getuniversiteparnom(@PathVariable("idFoyer") String idFoyer,@PathVariable("nomUniversite") String nomUniversite){
+         iUniversiteService.affecteUniFoy(idFoyer,nomUniversite);}
+
 }

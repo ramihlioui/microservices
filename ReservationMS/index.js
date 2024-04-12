@@ -9,29 +9,57 @@ require('dotenv').config();
 const app = express();
 const port = 3000;
 
+/*
+registerWithEureka("reservation","localhost", "3000")
 
+
+async function registerWithEureka(serviceName, ipAddress, port) {
+  const eurekaUrl = 'http://localhost:8761/eureka/apps/' + serviceName;
+
+  const instance = {
+    hostName: serviceName,
+    ipAddress: ipAddress,
+    port: port,
+    instanceId: serviceName + ':' + ipAddress + ':' + port,
+    app: serviceName,
+    vipAddress: serviceName,
+    secureVipAddress: serviceName,
+    status: 'UP',
+    dataCenterInfo: {
+      '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
+      name: 'MyOwn'
+    }
+  };
+
+  try {
+    const response = await axios.post(eurekaUrl, { instance }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log('Registered with Eureka:', response.status);
+  } catch (error) {
+    console.error('Error registering with Eureka:', error.response?.data || error.message);
+  }
+}*/
 
 const client = new Eureka({
   instance: {
     app: 'reservation',
     hostName: 'localhost',
-    ipAddr: '127.0.0.1',
-    port: {
-      '$': 8080 ,
-      '@enabled': 'true',
-    },
+  //  ipAddr: '127.0.0.1',
+    port: 3000,
     vipAddress: 'reservation',
     dataCenterInfo: {
-      '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
       name: 'MyOwn',
     },
   },
   eureka: {
     host: 'localhost',
     port: 8761,
-    servicePath: '/eureka',
+    servicePath: '/eureka/apps',
   },
-  registerWithEureka: process.env.EUREKA_CLIENT_REGISTER
+  registerWithEureka: true
 });
 
 client.start();

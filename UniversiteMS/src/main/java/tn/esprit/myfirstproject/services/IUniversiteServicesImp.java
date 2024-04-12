@@ -47,5 +47,16 @@ public class IUniversiteServicesImp implements IUniversiteServices {
         return iUniversiteRepository.findUniversiteByNomUniversite(nom);
     }
 
+    @Override
+    public void affecteUniFoy(String idFoyer, String nomUni) {
+
+        Universite uni = iUniversiteRepository.findUniversiteByNomUniversite(nomUni);
+
+        uni.setIdfoyer(Long.parseLong(idFoyer));
+
+        iUniversiteRepository.save(uni);
+        log.info("uni affect foyer");
+
+    }
 
 }

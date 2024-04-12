@@ -12,4 +12,5 @@ public interface IUniversiteServices {
 
     Universite retrieveUniversite (long idUniversite);
      Universite getUniversiteparnom(String nom);
+     void affecteUniFoy(String idFoyer ,String nomUni);
 }

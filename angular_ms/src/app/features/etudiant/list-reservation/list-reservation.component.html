@@ -11,7 +11,6 @@
   <div class="card-body">
 
       <!-- Order list table START -->
-      <div class="table-responsive border-0"  *ngIf="reservation; else noReservations">
           <!-- Table START -->
           <table class="table table-dark-gray align-middle p-4 mb-0 table-hover">
               <!-- Table head -->
@@ -28,44 +27,43 @@
 
               <!-- Table body START -->
               <tbody>
-                  <!-- Table item -->
-                  <tr>
-                      <!-- Table data -->
-                      <td>
-                          <h6 class="table-responsive-title mt-2 mt-lg-0 mb-0">{{reservation.idReservation}}</h6>
-                      </td>
 
-                      <!-- Table data -->
-                      <td>
-                          <div class="table-responsive-title mt-2 mt-lg-0 mb-0">2024</div>
-                      </td>
+                <!-- Table data -->
+                <td>
+                  <h6 class="table-responsive-title mt-1 mt-lg-0 mb-0">{{ reservation._id }}</h6>
+                </td>
 
-                      <!-- Table data -->
-                      <td>
-                          <div class="table-responsive-title mt-2 mt-lg-0 mb-0">{{reservation.dateCreation}}</div>
-                      </td>
+                <!-- Table data -->
+                <td>
+                  <div class="table-responsive-title mt-1 mt-lg-0 mb-0">2024</div>
+                </td>
 
-                    <td>
-                      <div class="table-responsive-title mt-2 mt-lg-0 mb-0">{{reservation.numChambre}}</div>
-                    </td>
+                <!-- Table data -->
+                <td>
+                  <div class="table-responsive-title mt-1 mt-lg-0 mb-0">{{ reservation.reservationDate }}</div>
+                </td>
 
-                      <!-- Table data -->
-                      <td>
-                          <div *ngIf="reservation.estValide; else enAttente">
-                            <span class="badge bg-success">Confirmer</span>
-                          </div>
-                          <ng-template #enAttente>
-                            <span class="badge bg-warning">En attente</span>
-                          </ng-template>
-                      </td>
+                <!-- Table data -->
+                <td>
+                  <div class="table-responsive-title mt-1 mt-lg-0 mb-0">{{ reservation.chamberId }}</div>
+                </td>
 
-                      <!-- Table data -->
+                <!-- Table data -->
+                <td>
+                  <div *ngIf="reservation.estValide; else enAttente">
+                    <span class="badge bg-success">Confirmer</span>
+                  </div>
+                  <ng-template #enAttente>
+                    <span class="badge bg-warning">En attente</span>
+                  </ng-template>
+                </td>
+
+                <!-- Table data -->
                       <td>
                           <div class="d-flex justify-content-center gap-3">
                               <button type="submit" (click)="annulerReservation()" class="btn btn-danger-soft btn-round mb-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Annuler réservation"><i class="fas fa-ban">CANCEL</i></button>
                           </div>
                       </td>
-                  </tr>
               </tbody>
               <!-- Table body END -->
           </table>
@@ -79,7 +77,7 @@
 
   </div>
   <!-- Card body START -->
-</div>
+
   <!--Card END  -->
 
 

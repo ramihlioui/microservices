@@ -30,6 +30,8 @@ export class UniversiteComponent {
   listFoyerWithoutUniversite: Foyer[] = [];
 
   ngOnInit() {
+
+    this.getFoyersWithoutUniversite()
     this.getAllUniversites();
     this.UniversiteForm = this.formBuilder.group({
       nomUniversite: ['', Validators.required],
