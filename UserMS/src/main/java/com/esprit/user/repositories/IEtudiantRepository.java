@@ -1,6 +1,6 @@
-package com.ghassen.userms.repositories;
+package com.esprit.user.repositories;
 
-import com.ghassen.userms.entities.Etudiant;
+import com.esprit.user.entities.Etudiant;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IEtudiantRepository extends JpaRepository<Etudiant, Long> {

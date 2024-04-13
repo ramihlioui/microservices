@@ -1,6 +1,6 @@
-package com.ghassen.userms.services;
+package com.esprit.user.services;
 
-import com.ghassen.userms.repositories.IUserRepository;
+import com.esprit.user.repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,9 +1,14 @@
-package com.ghassen.userms.services;
+package com.esprit.user.services;
 
-import com.ghassen.userms.config.EmailService;
-import com.ghassen.userms.entities.*;
-import com.ghassen.userms.repositories.IEtudiantRepository;
-import com.ghassen.userms.repositories.IUserRepository;
+import com.esprit.user.config.EmailService;
+import com.esprit.user.entities.AuthenticationResponse;
+import com.esprit.user.entities.Etudiant;
+import com.esprit.user.entities.Mail;
+import com.esprit.user.entities.RefreshTokenRequest;
+import com.esprit.user.entities.Role;
+import com.esprit.user.entities.User;
+import com.esprit.user.repositories.IEtudiantRepository;
+import com.esprit.user.repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -97,7 +102,7 @@ public class IAuthenticationServicesImpl implements IAuthenticationServices {
         }
         return null;
     }
-
+/*
     @Override
     public HashMap<String, String> forgetPassword(String email) {
         HashMap message = new HashMap();
@@ -118,7 +123,7 @@ public class IAuthenticationServicesImpl implements IAuthenticationServices {
         message.put("user","user FOUND and email is Sent");
         return message;
     }
-
+*/
     @Override
     public HashMap<String,String> resetPassword(@PathVariable String passwordResetToken, String newPassword){
         User userexisting = userRepository.findByPasswordResetToken(passwordResetToken).orElseThrow(() -> new RuntimeException("User not found"));

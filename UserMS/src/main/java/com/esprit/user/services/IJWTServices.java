@@ -1,4 +1,4 @@
-package com.ghassen.userms.services;
+package com.esprit.user.services;
 
 import org.springframework.security.core.userdetails.UserDetails;
 

@@ -1,7 +1,7 @@
-package com.ghassen.userms.repositories;
+package com.esprit.user.repositories;
 
-import com.ghassen.userms.entities.Role;
-import com.ghassen.userms.entities.User;
+import com.esprit.user.entities.Role;
+import com.esprit.user.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,16 +1,23 @@
-package com.ghassen.userms.controllers;
+package com.esprit.user.controllers;
 
-import com.ghassen.userms.entities.AuthenticationResponse;
-import com.ghassen.userms.entities.Etudiant;
-import com.ghassen.userms.entities.RefreshTokenRequest;
-import com.ghassen.userms.entities.User;
-import com.ghassen.userms.services.IAuthenticationServices;
+import com.esprit.user.entities.AuthenticationResponse;
+import com.esprit.user.entities.Etudiant;
+import com.esprit.user.entities.RefreshTokenRequest;
+import com.esprit.user.entities.User;
+import com.esprit.user.services.IAuthenticationServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -89,12 +96,12 @@ public class AuthenticationController {
     public AuthenticationResponse refreshToken(@RequestBody RefreshTokenRequest refreshToken) {
         return authenticationServices.refreshToken(refreshToken);
     }
-
+    /*
     @PostMapping("/forgetpassword")
     public HashMap<String,String> forgetPassword(@RequestParam String email){
         return authenticationServices.forgetPassword(email);
     }
-
+*/
     @PostMapping("/resetPassword/{passwordResetToken}")
     public HashMap<String,String> resetPassword(@PathVariable String passwordResetToken, String newPassword){
         return authenticationServices.resetPassword(passwordResetToken, newPassword);

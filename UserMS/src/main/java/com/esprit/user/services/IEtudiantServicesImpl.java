@@ -1,11 +1,10 @@
-package com.ghassen.userms.services;
+package com.esprit.user.services;
 
-import com.ghassen.userms.entities.Etudiant;
-import com.ghassen.userms.repositories.IEtudiantRepository;
+import com.esprit.user.entities.Etudiant;
+import com.esprit.user.repositories.IEtudiantRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

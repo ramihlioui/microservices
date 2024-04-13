@@ -94,3 +94,90 @@
     </ul>
   </div>
 </aside>
+
+
+<div class="ml-72">
+<div class="page-content-wrapper border">
+
+  <!-- Title -->
+  <div class="row mb-3">
+    <div class="col-12 d-sm-flex justify-content-between align-items-center">
+      <h1 class="h3 mb-2 mb-sm-0">Liste des reservation</h1>
+    </div>
+  </div>
+
+
+  <div class="card bg-transparent border">
+
+    <!-- Card header START -->
+    <div class="card-header bg-light border-bottom">
+      <!-- Search and select START -->
+      <div class="row g-3 align-items-center justify-content-between">
+
+
+
+      </div>
+      <!-- Search and select END -->
+    </div>
+    <!-- Card header END -->
+
+    <!-- Card body START -->
+    <div class="card-body">
+
+      <!-- Table START -->
+      <div class="table-responsive border-0 rounded-3">
+        <table class="table table-dark-gray align-middle p-3 mb-0 table-hover">
+          <!-- Table head -->
+          <thead>
+          <tr>
+            <th scope="col" class="border-0 rounded-start">ID reservation</th>
+            <th scope="col" class="border-0">nom étudiant</th>
+            <th scope="col" class="border-0">numéro de chambre</th>
+            <th scope="col" class="border-0 rounded-end">date de reservation</th>
+          </tr>
+          </thead>
+
+          <!-- Table body START -->
+          <tbody *ngFor="let res of reservations ">
+          <!-- Table row -->
+          <tr>
+            <!-- Table data -->
+            <td>
+              <h6 class="table-responsive-title mb-0">{{res._id}}</h6>
+            </td>
+            <!-- Table data -->
+            <td>
+              <h6 class="table-responsive-title mb-0">{{res.etudiantName}}</h6>
+            </td>
+            <!-- Table data -->
+            <td>
+              <h6 class="table-responsive-title mb-0">{{res.chambreNumber}}</h6>
+            </td>
+
+            <td>
+              <h6 class="table-responsive-title mb-0">{{res.reservationDate | date: 'yyyy-MM-dd'}}</h6>
+            </td>
+
+          </tr>
+
+          </tbody>
+          <!-- Table body END -->
+        </table>
+        <button
+          class="font-medium text-white bg-green-600 hover:bg-green-700 dark:text-white dark:bg-green-500 hover:underline py-2 px-4 rounded focus:outline-none focus:shadow-outline-green active:bg-green-800"
+          (click)="exportExcel()"
+        >
+          Export reservation
+        </button>
+      </div>
+      <!-- Table END -->
+
+    </div>
+    <!-- All review table END -->
+
+  </div>
+
+
+
+</div>
+  </div>

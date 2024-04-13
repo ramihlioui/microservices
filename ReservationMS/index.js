@@ -41,8 +41,8 @@ async function registerWithEureka(serviceName, ipAddress, port) {
   } catch (error) {
     console.error('Error registering with Eureka:', error.response?.data || error.message);
   }
-}*/
-
+}
+*/
 const client = new Eureka({
   instance: {
     app: 'reservation',
@@ -143,8 +143,8 @@ app.get('/reservation/blocAndChambreIds', async (req, res) => {
   try {
     // Make parallel requests to fetch bloc and chambre IDs
     const [blocResponse, chambreResponse] = await Promise.all([
-      axios.get('http://bloc:8090/bloc/AllBlocs'),
-      axios.get('http://host.docker.internal:8090/chambre/afficherchambres')
+      axios.get('http://localhost:8090/bloc/AllBlocs'),
+      axios.get('http://localhost:8090/chambre/afficherchambres')
     ]);
 
     // Extract bloc and chambre IDs from responses
@@ -163,6 +163,44 @@ app.get('/reservation/blocAndChambreIds', async (req, res) => {
   }
 });
 
+app.get('/reservation/all', async (req, res) => {
+  try {
+    const reservations = await Reservation.find();
+
+    if (!reservations) {
+      console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+      return res.status(404).json({ error: 'Reservation not found' });
+    }
+
+    const modifiedReservations = [];
+
+    for ( const res of reservations){
+     const etudiant = await axios.get(`http://localhost:8090/etudiant/${res.etudiantId}`);
+     const etures = etudiant.data;
+      console.log(etures)
+
+     const chambre = await axios.get(`http://localhost:8090/chambre/afficherchambre/${res.chamberId}`);
+     const chres =  chambre.data;
+      console.log(chres)
+
+
+      const modifiedReservation = {
+        _id: res._id,
+        reservationDate: res.reservationDate,
+        etudiantId: res.etudiantId,
+        etudiantName: etures.nom,
+        chambreNumber: chres.numeroChambre
+      };
+
+      modifiedReservations.push(modifiedReservation);
+    }
+
+
+    res.json(modifiedReservations);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 
 

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Reservation } from 'src/app/Model/reservation';
 import { environment } from 'src/environments/environment.development';
+import {ReservationAdmin} from "../../Model/ReservationAdmin";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class ReservationService {
   }
 
   getAllReservations() {
-    return this.http.get<Reservation[]>(`${environment.BaseUrl}/reservation/all`);
+    return this.http.get<ReservationAdmin[]>(`${environment.BaseUrl}/reservation/all`);
   }
 
   getReservationById(idReservation: number) {

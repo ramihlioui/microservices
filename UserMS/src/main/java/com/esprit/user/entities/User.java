@@ -1,4 +1,4 @@
-package com.ghassen.userms.entities;
+package com.esprit.user.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

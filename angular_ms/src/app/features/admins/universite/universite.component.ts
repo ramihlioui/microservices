@@ -42,6 +42,8 @@ export class UniversiteComponent {
   getAllUniversites() {
     this.universiteService.getAllUniversites().subscribe((data: Universite[]) => {
       this.listUniversite = data;
+      console.log(data)
+      console.log(this.listUniversite)
     });
   }
   getFoyers() {

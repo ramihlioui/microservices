@@ -1,8 +1,7 @@
-package com.ghassen.userms.config;
+package com.esprit.user.config;
 
-
-import com.ghassen.userms.services.IJWTServices;
-import com.ghassen.userms.services.IUserServices;
+import com.esprit.user.services.IJWTServices;
+import com.esprit.user.services.IUserServices;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.ghassen.userms.entities;
+package com.esprit.user.entities;
 
 import jakarta.persistence.Entity;
 import lombok.AccessLevel;

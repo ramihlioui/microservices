@@ -1,4 +1,4 @@
-package com.ghassen.userms.entities;
+package com.esprit.user.entities;
 
 public enum Role {
     ADMIN, ETUDIANT

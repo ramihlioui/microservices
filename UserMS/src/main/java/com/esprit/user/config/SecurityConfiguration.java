@@ -1,14 +1,14 @@
-package com.ghassen.userms.config;
+package com.esprit.user.config;
 
-import com.ghassen.userms.services.IUserServices;
-import lombok.RequiredArgsConstructor;
+import com.esprit.user.entities.Role;
+import com.esprit.user.services.IUserServices;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -16,19 +16,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
@@ -42,8 +35,8 @@ public class SecurityConfiguration {
 				.cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req
-                                .requestMatchers("/auth/**").permitAll() // Autoriser les requêtes à /auth/**
-                               // .requestMatchers("/auth/").permitAll() // Autoriser les requêtes à /auth/**
+                                //.requestMatchers("/auth/**").permitAll() // Autoriser les requêtes à /auth/**
+                               .requestMatchers("/**").permitAll() // Autoriser les requêtes à /auth/**
                                 //.requestMatchers("/**").hasAnyRole(Role.ADMIN.name(), Role.ETUDIANT.name())
                                 .anyRequest().authenticated()
                 )

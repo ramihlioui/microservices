@@ -1,10 +1,10 @@
-package com.ghassen.userms;
+package com.esprit.user;
 
-import com.ghassen.userms.entities.Admin;
-import com.ghassen.userms.entities.Role;
-import com.ghassen.userms.entities.User;
-import com.ghassen.userms.repositories.IAdminRepository;
-import com.ghassen.userms.repositories.IUserRepository;
+import com.esprit.user.entities.Admin;
+import com.esprit.user.entities.Role;
+import com.esprit.user.entities.User;
+import com.esprit.user.repositories.IAdminRepository;
+import com.esprit.user.repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

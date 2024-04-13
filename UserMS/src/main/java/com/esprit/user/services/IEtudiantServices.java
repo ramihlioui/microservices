@@ -1,6 +1,6 @@
-package com.ghassen.userms.services;
+package com.esprit.user.services;
 
-import com.ghassen.userms.entities.Etudiant;
+import com.esprit.user.entities.Etudiant;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

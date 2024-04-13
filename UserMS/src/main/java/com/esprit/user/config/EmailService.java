@@ -1,6 +1,6 @@
-package com.ghassen.userms.config;
+package com.esprit.user.config;
 
-import com.ghassen.userms.entities.Mail;
+import com.esprit.user.entities.Mail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
